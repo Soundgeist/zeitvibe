@@ -7,7 +7,6 @@
 :root {
   /* Palette — near-black ink, warm bone, one acid accent used sparingly */
   --ink:      #08080b;
-  --ink-soft: #101015;
   --bone:     #f2efe8;
   --muted:    rgb(242 239 232 / 0.52);
   --faint:    rgb(242 239 232 / 0.32);
