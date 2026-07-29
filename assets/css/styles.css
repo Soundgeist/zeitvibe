@@ -1,0 +1,375 @@
+/* ==========================================================================
+   Zeitvibe Ventures
+   Single stylesheet. No framework, no build step.
+   Order: tokens → reset → atmosphere → layout → sections → motion → responsive
+   ========================================================================== */
+
+:root {
+  /* Palette — near-black ink, warm bone, one acid accent used sparingly */
+  --ink:      #08080b;
+  --ink-soft: #101015;
+  --bone:     #f2efe8;
+  --muted:    rgb(242 239 232 / 0.52);
+  --faint:    rgb(242 239 232 / 0.32);
+  --line:     rgb(242 239 232 / 0.13);
+  --accent:   #d4ff3f;
+
+  /* Type */
+  --sans:  'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --serif: 'Instrument Serif', ui-serif, Georgia, serif;
+
+  /* Fluid scale — clamp(min, preferred, max) */
+  --t-hero:    clamp(3.25rem, 11.5vw, 11rem);
+  --t-contact: clamp(2rem, 6vw, 5rem);
+  --t-pillar:  clamp(2rem, 6.5vw, 5.25rem);
+  --t-lead:    clamp(1.0625rem, 1.7vw, 1.5rem);
+  --t-body:    clamp(1rem, 1.2vw, 1.1875rem);
+
+  /* Rhythm */
+  --gutter:  clamp(1.25rem, 5vw, 5.5rem);
+  --section: clamp(6rem, 16vh, 12rem);
+  --maxw:    84rem;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- Reset ---------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--sans);
+  font-size: var(--t-body);
+  line-height: 1.5;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+h1, h2, p, ul { margin: 0; }
+ul { padding: 0; list-style: none; }
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.3s var(--ease), opacity 0.3s var(--ease);
+}
+
+svg { fill: none; stroke: currentColor; stroke-width: 1.5; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.skip {
+  position: fixed;
+  top: 0; left: 50%;
+  translate: -50% -150%;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  background: var(--accent);
+  color: var(--ink);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: translate 0.3s var(--ease);
+}
+.skip:focus-visible { translate: -50% 0; }
+
+/* ---------- Atmosphere ----------
+   Two fixed layers behind everything: a slow-drifting radial "ether" glow
+   and a static film grain. Both inert to pointer + screen readers. */
+
+.ether, .grain {
+  position: fixed;
+  inset: -25%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.ether {
+  background:
+    radial-gradient(38rem 38rem at 22% 18%, rgb(212 255 63 / 0.10), transparent 68%),
+    radial-gradient(44rem 44rem at 78% 72%, rgb(122 108 255 / 0.14), transparent 70%),
+    radial-gradient(30rem 30rem at 62% 8%,  rgb(255 122 92 / 0.07),  transparent 72%);
+  filter: blur(28px);
+  animation: drift 34s var(--ease) infinite alternate;
+}
+
+@keyframes drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(2.5%, -2%, 0) scale(1.08); }
+  100% { transform: translate3d(-2%, 2.5%, 0) scale(1.04); }
+}
+
+/* Film grain — inline SVG turbulence, keeps the flat black from looking dead */
+.grain {
+  opacity: 0.32;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+
+/* ---------- Top bar ---------- */
+
+.bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: clamp(1.25rem, 3vw, 2.25rem) var(--gutter);
+}
+
+.wordmark {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.wordmark__sub {
+  color: var(--faint);
+  margin-left: 0.5em;
+  font-weight: 400;
+  transition: color 0.3s var(--ease);
+}
+.wordmark:hover .wordmark__sub { color: var(--bone); }
+
+.bar__nav {
+  display: flex;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.bar__nav a { color: var(--muted); }
+.bar__nav a:hover { color: var(--accent); }
+
+/* ---------- Shared section shell ---------- */
+
+main > section {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--faint);
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 0.5rem;
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: min(82svh, 54rem);
+  padding-block: clamp(3rem, 8vh, 7rem) var(--section);
+}
+
+.hero__line {
+  font-size: var(--t-hero);
+  font-weight: 600;
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.hero__line em {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  /* Optical alignment: the serif italic sits visually right of the sans above it */
+  margin-left: -0.04em;
+}
+
+.dot { color: var(--accent); }
+
+.hero__sub {
+  max-width: 40ch;
+  margin-top: clamp(1.75rem, 4vw, 3rem);
+  font-size: var(--t-lead);
+  line-height: 1.45;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+/* ---------- Pillars ---------- */
+
+.pillar {
+  display: grid;
+  grid-template-columns: auto 1fr minmax(0, 26ch);
+  align-items: baseline;
+  gap: clamp(1rem, 3vw, 3rem);
+  padding-block: clamp(1.5rem, 3.5vw, 2.75rem);
+  border-bottom: 1px solid var(--line);
+  transition: border-color 0.4s var(--ease);
+}
+.pillar:hover { border-bottom-color: var(--accent); }
+
+.pillar__num {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--faint);
+  transition: color 0.4s var(--ease);
+}
+.pillar:hover .pillar__num { color: var(--accent); }
+
+.pillar__name {
+  font-size: var(--t-pillar);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  transition: color 0.4s var(--ease);
+}
+.pillar:hover .pillar__name { color: var(--accent); }
+
+.pillar__note {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+/* ---------- Manifesto ---------- */
+
+.manifesto { padding-block: var(--section); }
+
+.manifesto p {
+  max-width: 46ch;
+  margin-inline: auto;
+  font-size: clamp(1.25rem, 2.6vw, 2rem);
+  line-height: 1.38;
+  letter-spacing: -0.015em;
+  text-wrap: pretty;
+}
+.manifesto em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.1em;
+  color: var(--accent);
+}
+
+/* ---------- Contact ---------- */
+
+.contact {
+  padding-bottom: var(--section);
+  text-align: center;
+}
+
+.contact__line {
+  font-size: var(--t-contact);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+.contact__line em {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.08em;
+}
+
+.contact__mail {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  margin-top: clamp(1.75rem, 4vw, 2.75rem);
+  font-size: clamp(1rem, 1.8vw, 1.375rem);
+  color: var(--muted);
+  /* Underline that grows from the left on hover */
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: color 0.35s var(--ease), background-size 0.45s var(--ease);
+}
+.contact__mail:hover {
+  color: var(--accent);
+  background-size: 100% 1px;
+}
+.contact__mail .arrow {
+  width: 0.8em;
+  height: 0.8em;
+  transition: translate 0.35s var(--ease);
+}
+.contact__mail:hover .arrow { translate: 0.15em -0.15em; }
+
+/* ---------- Footer ---------- */
+
+.foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding: 1.75rem var(--gutter) clamp(1.75rem, 4vw, 2.5rem);
+  border-top: 1px solid var(--line);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.foot a:hover { color: var(--accent); }
+
+/* ---------- Reveal on scroll ----------
+   Elements start hidden only once JS confirms it can observe them
+   (html.js), so the page is fully readable if JS never runs. */
+
+.js [data-reveal] {
+  opacity: 0;
+  translate: 0 1.5rem;
+  transition: opacity 0.9s var(--ease), translate 0.9s var(--ease);
+}
+.js [data-reveal].in {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* Stagger siblings inside a group for a slight cascade */
+.js .pillar[data-reveal]:nth-child(2) { transition-delay: 0.08s; }
+.js .pillar[data-reveal]:nth-child(3) { transition-delay: 0.16s; }
+.js .hero__sub[data-reveal]           { transition-delay: 0.12s; }
+.js .contact__mail[data-reveal]       { transition-delay: 0.1s; }
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 60rem) {
+  .pillar {
+    grid-template-columns: auto 1fr;
+    row-gap: 0.75rem;
+  }
+  .pillar__note { grid-column: 2; max-width: 42ch; }
+}
+
+@media (max-width: 34rem) {
+  .hero { min-height: min(76svh, 40rem); }
+  .foot { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  .bar__nav { gap: 1.125rem; }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .ether { animation: none; }
+  .js [data-reveal] { opacity: 1; translate: none; transition: none; }
+  * { scroll-behavior: auto !important; }
+}
+
+html { scroll-behavior: smooth; }

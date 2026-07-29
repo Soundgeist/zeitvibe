@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zeitvibe Ventures — Brand, content &amp; social strategy</title>
+<meta name="description" content="A boutique studio built for one thing: making things spread. Brand, content, and social strategy for anything wanting to become a beloved part of the cultural and internet ether.">
+<link rel="canonical" href="https://zeitvibeventures.com/">
+<meta name="theme-color" content="#08080b">
+
+<!-- Open Graph / social -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://zeitvibeventures.com/">
+<meta property="og:title" content="Zeitvibe Ventures">
+<meta property="og:description" content="A boutique studio built for one thing: making things spread.">
+<!-- TODO(launch): add assets/img/og.png (1200×630), then uncomment both lines.
+     Left out deliberately — a broken og:image renders worse than none.
+<meta property="og:image" content="https://zeitvibeventures.com/assets/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+-->
+
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/instrument-serif-italic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/styles.css">
+
+<!-- Set before first paint so reveal animations never flash unstyled content.
+     Without JS this class is absent and all content renders visible. -->
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+<!-- ==========================================================
+     TODO — two placeholders to replace before launch:
+       1. Instagram URL  → search this file for INSTAGRAM_URL
+       2. Contact email  → search this file for CONTACT_EMAIL
+     ========================================================== -->
+
+<div class="ether" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<a class="skip" href="#work">Skip to content</a>
+
+<header class="bar">
+  <a class="wordmark" href="/" aria-label="Zeitvibe Ventures, home">
+    Zeitvibe<span class="wordmark__sub">Ventures</span>
+  </a>
+  <nav class="bar__nav">
+    <!-- INSTAGRAM_URL -->
+    <a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+
+  <section class="hero">
+    <h1 class="hero__line" data-reveal>
+      Making things
+      <em>spread<span class="dot">.</span></em>
+    </h1>
+    <p class="hero__sub" data-reveal>
+      A boutique studio built for one thing. Brand, content, and social strategy
+      for anything wanting to become a beloved part of the cultural and internet ether.
+    </p>
+  </section>
+
+  <section class="work" id="work">
+    <h2 class="eyebrow" data-reveal>What we do</h2>
+    <ul class="pillars">
+      <li class="pillar" data-reveal>
+        <span class="pillar__num">01</span>
+        <span class="pillar__name">Brand</span>
+        <span class="pillar__note">Identity, voice, and the shape of the thing people repeat.</span>
+      </li>
+      <li class="pillar" data-reveal>
+        <span class="pillar__num">02</span>
+        <span class="pillar__name">Content</span>
+        <span class="pillar__note">Work made to travel — built native to where it lands.</span>
+      </li>
+      <li class="pillar" data-reveal>
+        <span class="pillar__num">03</span>
+        <span class="pillar__name">Social&nbsp;Strategy</span>
+        <span class="pillar__note">Distribution, timing, and the mechanics of getting picked up.</span>
+      </li>
+    </ul>
+  </section>
+
+  <section class="manifesto">
+    <p data-reveal>
+      Attention isn't bought anymore, it's <em>earned in public</em>. We work small
+      and deliberately: fewer clients, sharper instincts, and a bias toward things
+      that feel inevitable once they exist. The goal is never reach for its own
+      sake — it's becoming something people are glad to pass along.
+    </p>
+  </section>
+
+  <section class="contact" id="contact">
+    <h2 class="contact__line" data-reveal>
+      Let's make something<br>
+      people can't <em>not</em> share.
+    </h2>
+    <!-- CONTACT_EMAIL -->
+    <a class="contact__mail" href="mailto:hello@zeitvibeventures.com" data-reveal>
+      hello@zeitvibeventures.com
+      <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M9 5h10v10"/></svg>
+    </a>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <span>&copy;<span data-year>2026</span> Zeitvibe Ventures</span>
+  <!-- INSTAGRAM_URL -->
+  <a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a>
+</footer>
+
+<script src="assets/js/main.js" defer></script>
+</body>
+</html>
