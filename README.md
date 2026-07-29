@@ -1,6 +1,6 @@
 # zeitvibe
 
-Site for **Zeitvibe Ventures** — a boutique studio for brand, content, and social
+Site for **Zeitvibe Ventures**, a boutique studio for brand, content, and social
 strategy. Built for one thing: making things spread.
 
 **Live:** [zeitvibeventures.com](https://zeitvibeventures.com)

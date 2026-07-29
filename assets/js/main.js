@@ -1,4 +1,4 @@
-/* Zeitvibe Ventures — progressive enhancement only.
+/* Zeitvibe Ventures. Progressive enhancement only.
    The page is complete and readable without this file. */
 
 (function () {

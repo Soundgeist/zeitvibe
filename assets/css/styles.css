@@ -5,7 +5,7 @@
    ========================================================================== */
 
 :root {
-  /* Palette — near-black ink, warm bone, one acid accent used sparingly */
+  /* Palette: near-black ink, warm bone, one acid accent used sparingly */
   --ink:      #08080b;
   --bone:     #f2efe8;
   --muted:    rgb(242 239 232 / 0.52);
@@ -13,14 +13,14 @@
   --line:     rgb(242 239 232 / 0.13);
   --accent:   #d4ff3f;
 
-  /* Type */
-  --sans:  'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --serif: 'Instrument Serif', ui-serif, Georgia, serif;
+  /* Type. One family, variable 400 to 700. Hierarchy comes from weight and
+     size only, never italics. */
+  --sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-  /* Fluid scale — clamp(min, preferred, max) */
-  --t-hero:    clamp(3.25rem, 11.5vw, 11rem);
-  --t-contact: clamp(2rem, 6vw, 5rem);
-  --t-pillar:  clamp(2rem, 6.5vw, 5.25rem);
+  /* Fluid scale: clamp(min, preferred, max) */
+  --t-hero:    clamp(2.5rem, 7vw, 6rem);
+  --t-contact: clamp(1.75rem, 4.5vw, 3.25rem);
+  --t-pillar:  clamp(1.75rem, 4.5vw, 3.5rem);
   --t-lead:    clamp(1.0625rem, 1.7vw, 1.5rem);
   --t-body:    clamp(1rem, 1.2vw, 1.1875rem);
 
@@ -53,6 +53,10 @@ body {
 
 h1, h2, p, ul { margin: 0; }
 ul { padding: 0; list-style: none; }
+
+/* No italics anywhere on this site. Emphasis is carried by weight and colour,
+   so <em> keeps its semantics without the slant. */
+em { font-style: normal; font-weight: 600; }
 
 a {
   color: inherit;
@@ -108,7 +112,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.5; }
   100% { transform: translate3d(-2%, 2.5%, 0) scale(1.04); }
 }
 
-/* Film grain — inline SVG turbulence, keeps the flat black from looking dead */
+/* Film grain via inline SVG turbulence, so the flat black never looks dead */
 .grain {
   opacity: 0.32;
   mix-blend-mode: overlay;
@@ -180,20 +184,27 @@ main > section {
 
 .hero__line {
   font-size: var(--t-hero);
-  font-weight: 600;
-  line-height: 0.92;
-  letter-spacing: -0.045em;
+  line-height: 0.94;
+  letter-spacing: -0.04em;
   text-wrap: balance;
 }
 
-.hero__line em {
+/* The two-tier setup carries the hierarchy that the serif italic used to:
+   the framing line recedes in size, weight and colour; the payoff word
+   lands at full scale. No slant involved. */
+.hero__lead {
   display: block;
-  font-family: var(--serif);
-  font-weight: 400;
-  font-style: italic;
+  font-size: 0.5em;
+  font-weight: 500;
   letter-spacing: -0.02em;
-  /* Optical alignment: the serif italic sits visually right of the sans above it */
-  margin-left: -0.04em;
+  color: var(--muted);
+}
+
+.hero__key {
+  display: block;
+  font-weight: 700;
+  /* Pull the big line up slightly against the smaller one above it */
+  margin-top: 0.06em;
 }
 
 .dot { color: var(--accent); }
@@ -257,12 +268,7 @@ main > section {
   letter-spacing: -0.015em;
   text-wrap: pretty;
 }
-.manifesto em {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 1.1em;
-  color: var(--accent);
-}
+.manifesto em { color: var(--accent); }
 
 /* ---------- Contact ---------- */
 
@@ -278,10 +284,10 @@ main > section {
   letter-spacing: -0.04em;
   text-wrap: balance;
 }
+/* "not" is the hinge of the sentence, so it takes the accent and extra weight */
 .contact__line em {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: 1.08em;
+  font-weight: 700;
+  color: var(--accent);
 }
 
 .contact__mail {
