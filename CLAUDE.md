@@ -1,7 +1,7 @@
 # Zeitvibe Ventures site
 
 Marketing site for Zeitvibe Ventures, a boutique studio doing brand, content, and
-social strategy. Positioning line: *built for one thing, making things spread.*
+social strategy. Positioning line: *built for one thing, making things unavoidable.*
 
 - **Repo:** `github.com/Soundgeist/zeitvibe`
 - **Live:** https://zeitvibeventures.com (custom domain via `CNAME`)

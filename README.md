@@ -1,7 +1,7 @@
 # zeitvibe
 
 Site for **Zeitvibe Ventures**, a boutique studio for brand, content, and social
-strategy. Built for one thing: making things spread.
+strategy. Built for one thing: making things unavoidable.
 
 **Live:** [zeitvibeventures.com](https://zeitvibeventures.com)
 

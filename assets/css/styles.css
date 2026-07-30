@@ -132,7 +132,10 @@ a:hover {
 /* ---------- Elements ---------- */
 
 .statement {
-  max-width: 16ch;
+  /* Measured in em, not ch: `ch` is the width of a zero, which in Garamond is
+     far narrower than a capital, so a ch cap wraps uppercase unpredictably.
+     12em holds "MAKING THINGS" on one line and drops the long second word. */
+  max-width: 12em;
   font-size: var(--t-statement);
   font-weight: 400;
   line-height: 1.02;
