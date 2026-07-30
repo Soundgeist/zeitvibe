@@ -1,10 +1,10 @@
 /* Self-hosted webfont. Latin subset only, no external requests.
-   Generated file: see CLAUDE.md, Fonts section. Inter is variable, 400 to 700. */
+   Generated file: see CLAUDE.md, Fonts section. Archivo is variable, 400 to 900. */
 
 @font-face {
-  font-family: 'Inter';
+  font-family: 'Archivo';
   font-style: normal;
-  font-weight: 400 700;
+  font-weight: 400 900;
   font-display: swap;
-  src: url('../fonts/inter.woff2') format('woff2');
+  src: url('../fonts/archivo.woff2') format('woff2');
 }

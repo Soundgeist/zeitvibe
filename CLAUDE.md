@@ -28,7 +28,7 @@ markup, revisit then.
 │   │   ├── fonts.css           # GENERATED, @font-face only. See Fonts below.
 │   │   └── styles.css          # all styling, token-driven
 │   ├── js/main.js              # progressive enhancement only
-│   ├── fonts/inter.woff2       # self-hosted, latin subset, variable 400-700
+│   ├── fonts/archivo.woff2     # self-hosted, latin subset, variable 400-900
 │   └── img/favicon.svg
 ├── CNAME                       # zeitvibeventures.com, do not delete
 ├── .nojekyll                   # skip Jekyll, serve files verbatim
@@ -73,22 +73,48 @@ top to bottom to match the page. Class names are BEM-ish (`.pillar__name`), flat
 no nesting deeper than one level. Fluid sizing uses `clamp()` rather than
 breakpoints; only two media queries exist and they handle genuine layout changes.
 
-**Palette.** Near-black `--ink`, warm `--bone` text, and a single acid accent
-`--accent` (#d4ff3f). The accent is load-bearing precisely because it is rare:
-hover states, one emphasised phrase, the period after "spread". Resist adding a
-second accent.
+### Aesthetic brief
 
-**Type. One family: Inter, variable, 400 to 700.**
+**Minimal like the competitor, but printed rather than digital.** Think screen-printed
+show flyer or xeroxed zine, not SaaS landing page. Client's words: keep the minimal
+setup, stay away from "too techy or generic gradient", lean "Brooklyn grunge".
+
+Three standing prohibitions follow from that:
+
+> - **No gradients.** No radial glows, no soft light, no colour washes. A drifting
+>   multi-colour gradient layer was built and then removed for reading exactly like
+>   the generic tech look the client rejected. The only `linear-gradient` in the
+>   stylesheet paints a *solid* two-pixel underline bar, which is a CSS technique,
+>   not a visual gradient.
+> - **No italics.** See Type below.
+> - **No slick motion.** Staged fade-ups and long eased transitions read as product
+>   marketing. Transitions are `0.15s linear`, and there is no scroll animation.
+
+Texture comes from grain and hard rules only. The single `.grain` layer (coarse SVG
+turbulence, `mix-blend-mode: overlay`) is static, so nothing there needs a
+reduced-motion escape hatch.
+
+**Palette.** Warm off-black `--ink` (#0d0c0a), paper `--bone` (#eae5da), and one
+riso red `--accent` (#e2452c). The warmth is deliberate: cool blue-blacks and acid
+greens read techy, which is the thing to avoid. The accent is load-bearing precisely
+because it is rare: hover states, one emphasised phrase, the period after "spread".
+Resist adding a second accent.
+
+**Type. One family: Archivo, variable, 400 to 900.**
+
+An industrial grotesque built for print. The wide weight axis is the point:
+headlines run at 800 to 900 for poster heft, body sits at 400 to 500. Pillar names
+and all small labels are uppercase with open tracking, like flyer copy.
 
 > **No italics anywhere on this site.** This is a standing design rule, not an
 > oversight. Hierarchy and emphasis come from **weight, size, and colour only**.
-> A global `em { font-style: normal; font-weight: 600 }` rule enforces it, so
+> A global `em { font-style: normal; font-weight: 700 }` rule enforces it, so
 > `<em>` keeps its semantics without the slant. Do not reintroduce a serif face,
 > an italic face, or `font-style: italic`.
 
 The hero demonstrates the pattern that replaced the old serif-italic treatment:
 `.hero__lead` sets the framing line small, at weight 500, in `--muted`;
-`.hero__key` lands the payoff word at full scale and weight 700. Roughly a 2:1
+`.hero__key` lands the payoff word at full scale and weight 900. Roughly a 2:1
 size ratio plus a weight and colour step. Reuse that logic for new large type.
 
 **Copy. No em dashes.** Also a standing rule. Use periods, commas, colons, or
@@ -96,14 +122,16 @@ restructure the sentence. Do not substitute hyphens or en dashes as a workaround
 This applies to visible copy, `<title>`, meta descriptions, and alt text. Code
 comments follow it too, for consistency.
 
-**JavaScript.** `main.js` is enhancement only and the page must remain complete
-without it. The reveal-on-scroll styles are scoped under `html.js`, set by a tiny
-inline script in `<head>`. That ordering prevents a flash of visible content
-before it hides. If you add JS, keep this property.
+**JavaScript.** `main.js` does one thing: stamp the current year in the footer.
+It is enhancement only and the page must remain complete without it. An
+IntersectionObserver scroll-reveal system used to live here and was deliberately
+deleted, along with the `html.js` class and every `data-reveal` attribute, because
+staged fade-ups undercut the printed register. Do not add it back without asking.
 
-**Motion.** Slow and atmospheric, never bouncy. All of it respects
-`prefers-reduced-motion: reduce`. Two fixed background layers (`.ether` drifting
-gradients, `.grain` SVG noise) sit at `z-index: -1` and are `aria-hidden`.
+**Motion.** Almost nothing moves. Hover transitions are `0.15s linear`, chosen to
+feel abrupt rather than eased. No keyframe animations remain. The
+`prefers-reduced-motion` block therefore only has to disable smooth anchor
+scrolling and blanket-cancel transitions.
 
 **Accessibility.** Skip link, visible `:focus-visible` rings, semantic headings in
 order, decorative layers hidden from screen readers. Keep it that way.
@@ -120,7 +148,7 @@ Two traps, both of which produced real bugs here:
 1. **Send a complete User-Agent string.** A truncated version (`Chrome/120`)
    makes Google serve **static instances** instead of the variable font. You get
    one `@font-face` per weight, all silently overwriting the same output file.
-2. **Request variable fonts with a range** (`wght@400..700`), never discrete
+2. **Request variable fonts with a range** (`wght@400..900`), never discrete
    values (`wght@400;600`), for the same reason.
 
 The `ABORT` guard below catches both by refusing to write the same filename twice.
@@ -130,7 +158,7 @@ cd assets/fonts && python3 - <<'PY'
 import re, urllib.request, pathlib, sys
 UA={'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 '
                  '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
-url="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap"
+url="https://fonts.googleapis.com/css2?family=Archivo:wght@400..900&display=swap"
 css=urllib.request.urlopen(urllib.request.Request(url,headers=UA)).read().decode()
 out,seen=[],{}
 for b in re.findall(r'@font-face\s*\{(.*?)\}',css,re.S):
