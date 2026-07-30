@@ -1,10 +1,12 @@
 /* Self-hosted webfont. Latin subset only, no external requests.
-   Generated file: see CLAUDE.md, Fonts section. Archivo is variable, 400 to 900. */
+   Generated file: see CLAUDE.md, Fonts section.
+   Archivo variable on two axes: width 62-125%, weight 400-900. */
 
 @font-face {
   font-family: 'Archivo';
   font-style: normal;
   font-weight: 400 900;
+  font-stretch: 62% 125%;
   font-display: swap;
   src: url('../fonts/archivo.woff2') format('woff2');
 }

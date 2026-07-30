@@ -1,38 +1,44 @@
 /* ==========================================================================
    Zeitvibe Ventures
    Single stylesheet. No framework, no build step.
-   Order: tokens, reset, texture, layout, sections, responsive
 
-   Aesthetic brief: minimal like chaoticgoodprojects.org, but printed rather
-   than digital. Screen-printed flyer, not SaaS landing page. Explicitly no
-   gradients, no glow, no soft light. Texture comes from grain and hard rules.
+   FORMAT: photocopied show flyer. Newsprint paper, heavy black ink, one riso
+   red. Structure is a stack of full-bleed slabs and hard rules rather than
+   floating centred sections. Texture is halftone and grain, never gradient.
+
+   Order: tokens, reset, texture, slabs, sections, responsive
    ========================================================================== */
 
 :root {
-  /* Palette: warm off-black, paper bone, one riso red.
-     Deliberately warm. Cool blue-blacks and acid greens read techy. */
-  --ink:    #0d0c0a;
-  --bone:   #eae5da;
-  --muted:  rgb(234 229 218 / 0.56);
-  --faint:  rgb(234 229 218 / 0.34);
-  --line:   rgb(234 229 218 / 0.20);
-  --accent: #e2452c;
+  /* Palette. Light paper base: a xeroxed flyer is ink on stock, and dark
+     backgrounds with glow were reading techy. */
+  --paper: #e6e2d6;
+  --ink:   #14120f;
+  --red:   #b82d17;
+  /* Same red lifted for use on the ink slabs, where the base red sits too
+     close to black to stay legible. Not a second accent, a legibility tint. */
+  --red-lift: #ff5a3c;
 
-  /* Type. One family: Archivo, variable 400 to 900. An industrial grotesque
-     built for print. Headlines run heavy; hierarchy is weight and size only. */
+  --ink-70: rgb(20 18 15 / 0.70);
+  --ink-62: rgb(20 18 15 / 0.62);
+  --paper-70: rgb(230 226 214 / 0.70);
+
+  /* Type. One family: Archivo, variable on two axes.
+     width 62-125%, weight 400-900. Condensed heavy = poster display. */
   --sans: 'Archivo', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-  /* Fluid scale: clamp(min, preferred, max) */
-  --t-hero:    clamp(2.5rem, 7vw, 6rem);
-  --t-contact: clamp(1.75rem, 4.5vw, 3.25rem);
-  --t-pillar:  clamp(1.5rem, 3.8vw, 2.875rem);
-  --t-lead:    clamp(1.0625rem, 1.7vw, 1.5rem);
-  --t-body:    clamp(1rem, 1.2vw, 1.1875rem);
+  /* Fluid scale */
+  --t-hero: clamp(2.75rem, 9vw, 6.5rem);
+  --t-act:  clamp(1.5rem, 5vw, 3.25rem);
+  --t-cta:  clamp(1.75rem, 5vw, 3.5rem);
+  --t-lead: clamp(1.0625rem, 1.6vw, 1.375rem);
+  --t-body: clamp(1rem, 1.2vw, 1.125rem);
 
   /* Rhythm */
-  --gutter:  clamp(1.25rem, 5vw, 5.5rem);
-  --section: clamp(5rem, 14vh, 10rem);
-  --maxw:    84rem;
+  --gutter:  clamp(1.25rem, 5vw, 4.5rem);
+  --section: clamp(4rem, 11vh, 8rem);
+  --maxw:    82rem;
+  --rule:    3px;
 }
 
 /* ---------- Reset ---------- */
@@ -43,8 +49,8 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--ink);
-  color: var(--bone);
+  background: var(--paper);
+  color: var(--ink);
   font-family: var(--sans);
   font-size: var(--t-body);
   line-height: 1.5;
@@ -53,24 +59,23 @@ body {
   overflow-x: hidden;
 }
 
-h1, h2, p, ul { margin: 0; }
-ul { padding: 0; list-style: none; }
+h1, h2, p, ol { margin: 0; }
+ol { padding: 0; list-style: none; }
 
 /* No italics anywhere on this site. Emphasis is weight and colour. */
-em { font-style: normal; font-weight: 700; }
+em { font-style: normal; font-weight: 800; color: var(--red); }
 
 a {
   color: inherit;
   text-decoration: none;
-  /* Short and abrupt. Long eased fades read slick, which is the wrong register. */
-  transition: color 0.15s linear, background-size 0.2s linear;
+  transition: color 0.12s linear, background-color 0.12s linear;
 }
 
-svg { fill: none; stroke: currentColor; stroke-width: 2; }
+svg { fill: none; stroke: currentColor; stroke-width: 2.5; }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 4px;
+  outline: var(--rule) solid var(--red);
+  outline-offset: 3px;
 }
 
 .skip {
@@ -79,265 +84,325 @@ svg { fill: none; stroke: currentColor; stroke-width: 2; }
   translate: -50% -150%;
   z-index: 100;
   padding: 0.75rem 1.25rem;
-  background: var(--accent);
-  color: var(--bone);
+  background: var(--ink);
+  color: var(--paper);
   font-size: 0.8125rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
 }
 .skip:focus-visible { translate: -50% 0; }
 
 /* ---------- Texture ----------
-   One fixed layer: coarse film grain, the only texture on the page. Static,
-   so there is nothing here for reduced-motion to switch off. Replaces the
-   drifting radial gradient that made the page look generically techy. */
+   One fixed layer carrying a halftone dot screen over film grain, multiplied
+   into the paper. Static, so reduced-motion has nothing to disable here. */
 
-.grain {
+.dirt {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  /* Sits ON TOP of the type, not behind it. A photocopy screens the whole
+     page, ink included. Multiply keeps it from washing anything out. */
+  z-index: 50;
   pointer-events: none;
   opacity: 0.5;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.62' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='0.62'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7'%3E%3Ccircle cx='1.6' cy='1.6' r='0.7' fill='%23000' fill-opacity='0.14'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+  background-size: 7px 7px, 240px 240px;
 }
 
-/* ---------- Top bar ---------- */
+/* The dirt layer multiplies, so it is invisible against near-black. The ink
+   slabs carry their own toner speckle instead, or they read as dead flat. */
+.masthead, .ticker, .cta {
+  background-color: var(--ink);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23s)' opacity='0.2'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  color: var(--paper);
+}
 
-.bar {
+/* ---------- Masthead: full-bleed ink slab ---------- */
+.masthead__in {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 1.5rem;
-  padding: clamp(1.25rem, 3vw, 2rem) var(--gutter);
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding: clamp(0.875rem, 2vw, 1.25rem) var(--gutter);
 }
 
 .wordmark {
-  font-size: 0.8125rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-.wordmark__sub {
-  color: var(--faint);
-  margin-left: 0.5em;
-  font-weight: 500;
-}
-.wordmark:hover .wordmark__sub { color: var(--bone); }
-
-.bar__nav {
-  display: flex;
-  gap: clamp(1.25rem, 3vw, 2.5rem);
-  font-size: 0.8125rem;
-  font-weight: 500;
+  font-size: clamp(0.875rem, 1.5vw, 1.0625rem);
+  font-stretch: 78%;
+  font-weight: 900;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
-.bar__nav a { color: var(--muted); }
-.bar__nav a:hover { color: var(--accent); }
+.wordmark__sub {
+  color: var(--paper-70);
+  margin-left: 0.45em;
+  font-weight: 500;
+}
+.wordmark:hover .wordmark__sub { color: var(--paper); }
 
-/* ---------- Shared section shell ---------- */
+.masthead__nav {
+  display: flex;
+  gap: clamp(1rem, 2.5vw, 2rem);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.masthead__nav a { color: var(--paper-70); }
+.masthead__nav a:hover { color: var(--red-lift); }
 
-main > section {
+/* ---------- Shared shell for non-bleed sections ---------- */
+
+.hero, .lineup, .insert {
   max-width: var(--maxw);
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
 
 .eyebrow {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--faint);
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid var(--line);
-  margin-bottom: 0.5rem;
+  color: var(--ink-70);
+  padding-bottom: 0.875rem;
+  border-bottom: var(--rule) solid var(--ink);
 }
 
 /* ---------- Hero ---------- */
 
-.hero {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: min(78svh, 48rem);
-  padding-block: clamp(2.5rem, 7vh, 6rem) var(--section);
-}
+.hero { padding-block: clamp(2.5rem, 7vh, 5rem) clamp(2.5rem, 7vh, 4.5rem); }
 
-.hero__line {
-  font-size: var(--t-hero);
-  line-height: 0.92;
-  letter-spacing: -0.045em;
-  text-wrap: balance;
-}
+.hero__line { line-height: 0.86; }
 
-/* Two tiers: the framing line recedes, the payoff word lands at poster weight. */
+/* Small tracked kicker over a condensed poster word. Same weight-and-size
+   hierarchy as before, restated in flyer terms. */
 .hero__lead {
   display: block;
-  font-size: 0.46em;
-  font-weight: 500;
-  letter-spacing: -0.015em;
-  color: var(--muted);
+  font-size: clamp(0.8125rem, 1.5vw, 1.0625rem);
+  font-stretch: 82%;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-70);
+  margin-bottom: 0.6em;
 }
 
 .hero__key {
   display: block;
+  font-size: var(--t-hero);
+  font-stretch: 62%;
   font-weight: 900;
-  margin-top: 0.04em;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+  /* Off-register second impression, as if the red plate missed the black */
+  text-shadow: 0.035em 0.03em 0 var(--red);
 }
 
-.dot { color: var(--accent); }
+.dot { color: var(--red); }
 
 .hero__sub {
-  max-width: 40ch;
-  margin-top: clamp(1.75rem, 4vw, 2.75rem);
+  max-width: 42ch;
+  margin-top: clamp(1.5rem, 3.5vw, 2.25rem);
+  padding-top: clamp(1.25rem, 3vw, 1.75rem);
+  border-top: 1px solid var(--ink-62);
   font-size: var(--t-lead);
+  font-weight: 500;
   line-height: 1.42;
-  color: var(--muted);
   text-wrap: pretty;
 }
 
-/* ---------- Pillars ---------- */
+/* ---------- Ticker: crude broadcast strip ---------- */
 
-.pillar {
+.ticker {
+  overflow: hidden;
+  padding-block: 0.5rem;
+  border-block: var(--rule) solid var(--ink);
+}
+.ticker__track {
+  display: flex;
+  width: max-content;
+  animation: ticker 34s linear infinite;
+}
+.ticker__run {
+  flex: none;
+  font-size: clamp(1.125rem, 2.6vw, 1.875rem);
+  font-stretch: 70%;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.ticker b { color: var(--red-lift); }
+
+@keyframes ticker { to { transform: translateX(-50%); } }
+
+/* ---------- Lineup: numbered rows that invert on hover ---------- */
+
+.lineup { padding-block: var(--section) 0; }
+
+.act {
   display: grid;
   grid-template-columns: auto 1fr minmax(0, 26ch);
   align-items: baseline;
-  gap: clamp(1rem, 3vw, 3rem);
-  padding-block: clamp(1.25rem, 3vw, 2.25rem);
-  border-bottom: 1px solid var(--line);
-  /* Off-register print shift on hover, in place of a fade */
-  transition: border-color 0.15s linear, translate 0.15s linear;
+  gap: clamp(0.875rem, 2.5vw, 2.5rem);
+  padding: clamp(0.875rem, 2.2vw, 1.5rem) 0.75rem;
+  /* Pulled out so the inverted slab bleeds past the text without shifting it */
+  margin-inline: -0.75rem;
+  border-bottom: var(--rule) solid var(--ink);
+  transition: background-color 0.1s linear, color 0.1s linear;
 }
-.pillar:hover {
-  border-bottom-color: var(--accent);
-  translate: 0.25rem 0;
-}
+.act:hover { background: var(--ink); color: var(--paper); }
 
-.pillar__num {
+.act__num {
   font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--faint);
-  transition: color 0.15s linear;
-}
-.pillar:hover .pillar__num { color: var(--accent); }
-
-.pillar__name {
-  font-size: var(--t-pillar);
   font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--ink-62);
+}
+.act:hover .act__num { color: var(--red-lift); }
+
+.act__name {
+  font-size: var(--t-act);
+  font-stretch: 66%;
+  font-weight: 900;
   line-height: 1;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.005em;
   text-transform: uppercase;
-  transition: color 0.15s linear;
-}
-.pillar:hover .pillar__name { color: var(--accent); }
-
-.pillar__note {
-  font-size: 0.9375rem;
-  line-height: 1.5;
-  color: var(--muted);
-  text-wrap: pretty;
 }
 
-/* ---------- Manifesto ---------- */
-
-.manifesto { padding-block: var(--section); }
-
-.manifesto p {
-  max-width: 44ch;
-  margin-inline: auto;
-  font-size: clamp(1.1875rem, 2.4vw, 1.875rem);
+.act__note {
+  font-size: 0.875rem;
   font-weight: 500;
-  line-height: 1.36;
-  letter-spacing: -0.018em;
+  line-height: 1.45;
+  color: var(--ink-70);
+}
+.act:hover .act__note { color: var(--paper-70); }
+
+/* ---------- Manifesto as a pasted-in clipping ---------- */
+
+.insert { padding-block: var(--section); }
+
+.clipping {
+  position: relative;
+  max-width: 48ch;
+  margin-inline: auto;
+  padding: clamp(1.75rem, 4vw, 2.75rem);
+  border: var(--rule) solid var(--ink);
+  background: var(--paper);
+  /* Sits off-square, like something taped down in a hurry */
+  rotate: -0.7deg;
+}
+
+.clipping__tag {
+  position: absolute;
+  top: 0;
+  left: clamp(1rem, 3vw, 2rem);
+  translate: 0 -50%;
+  padding: 0.3em 0.7em;
+  background: var(--red);
+  color: var(--paper);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  rotate: 1.4deg;
+}
+
+.clipping p {
+  font-size: clamp(1.125rem, 2.1vw, 1.5rem);
+  font-weight: 500;
+  line-height: 1.42;
+  letter-spacing: -0.012em;
   text-wrap: pretty;
 }
-.manifesto em { color: var(--accent); }
 
-/* ---------- Contact ---------- */
+/* ---------- Closing slab ---------- */
 
-.contact {
-  padding-bottom: var(--section);
+.cta__in {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding: var(--section) var(--gutter);
   text-align: center;
 }
 
-.contact__line {
-  font-size: var(--t-contact);
-  font-weight: 800;
-  line-height: 1.04;
-  letter-spacing: -0.035em;
+.cta__line {
+  font-size: var(--t-cta);
+  font-stretch: 70%;
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
   text-wrap: balance;
 }
-/* "not" is the hinge of the sentence, so it takes the accent */
-.contact__line em {
-  font-weight: 900;
-  color: var(--accent);
-}
+.cta__line em { color: var(--red-lift); }
 
-.contact__mail {
+.cta__mail {
   display: inline-flex;
   align-items: center;
   gap: 0.5em;
   margin-top: clamp(1.5rem, 3.5vw, 2.25rem);
-  font-size: clamp(1rem, 1.8vw, 1.25rem);
-  font-weight: 500;
-  color: var(--muted);
-  /* Hard rule that wipes in from the left, no easing */
-  background-image: linear-gradient(var(--accent), var(--accent));
-  background-repeat: no-repeat;
-  background-position: 0 100%;
-  background-size: 0% 2px;
+  padding: 0.65em 1.1em;
+  border: var(--rule) solid var(--paper);
+  font-size: clamp(0.9375rem, 1.7vw, 1.1875rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
-.contact__mail:hover {
-  color: var(--accent);
-  background-size: 100% 2px;
+.cta__mail:hover {
+  background: var(--red-lift);
+  border-color: var(--red-lift);
+  color: var(--ink);
 }
-.contact__mail .arrow { width: 0.75em; height: 0.75em; }
+.cta__mail .arrow { width: 0.75em; height: 0.75em; }
 
-/* ---------- Footer ---------- */
+/* ---------- Colophon ---------- */
 
-.foot {
+.colophon {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
   max-width: var(--maxw);
   margin-inline: auto;
-  padding: 1.5rem var(--gutter) clamp(1.5rem, 4vw, 2.25rem);
-  border-top: 1px solid var(--line);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
+  padding: 1.25rem var(--gutter) clamp(1.5rem, 4vw, 2rem);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--faint);
+  color: var(--ink-70);
 }
-.foot a:hover { color: var(--accent); }
+.colophon a:hover { color: var(--red); }
 
 /* ---------- Responsive ---------- */
 
 @media (max-width: 60rem) {
-  .pillar {
+  .act {
     grid-template-columns: auto 1fr;
-    row-gap: 0.625rem;
+    row-gap: 0.5rem;
   }
-  .pillar__note { grid-column: 2; max-width: 42ch; }
+  .act__note { grid-column: 2; max-width: 44ch; }
 }
 
 @media (max-width: 34rem) {
-  .hero { min-height: min(72svh, 36rem); }
-  .foot { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
-  .bar__nav { gap: 1.125rem; }
+  .colophon { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  .masthead__nav { gap: 0.875rem; }
+  /* Rotation reads as broken rather than deliberate in a narrow column */
+  .clipping { rotate: none; }
 }
 
 /* ---------- Reduced motion ----------
-   Almost nothing moves by design. This covers the anchor scroll only. */
+   The ticker is the only moving thing on the page. */
 
 html { scroll-behavior: smooth; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .ticker__track { animation: none; }
   * { transition: none !important; }
 }

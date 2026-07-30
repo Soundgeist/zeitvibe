@@ -28,7 +28,7 @@ markup, revisit then.
 │   │   ├── fonts.css           # GENERATED, @font-face only. See Fonts below.
 │   │   └── styles.css          # all styling, token-driven
 │   ├── js/main.js              # progressive enhancement only
-│   ├── fonts/archivo.woff2     # self-hosted, latin subset, variable 400-900
+│   ├── fonts/archivo.woff2     # self-hosted, latin subset, 2 axes, 88KB
 │   └── img/favicon.svg
 ├── CNAME                       # zeitvibeventures.com, do not delete
 ├── .nojekyll                   # skip Jekyll, serve files verbatim
@@ -69,53 +69,87 @@ Then enable **Enforce HTTPS** in Settings, Pages once the cert provisions
 
 **CSS.** Everything flows from the custom properties in `:root`: palette, type
 scale, rhythm. Change a token, not a call site. Sections are ordered in the file
-top to bottom to match the page. Class names are BEM-ish (`.pillar__name`), flat,
+top to bottom to match the page. Class names are BEM-ish (`.act__name`), flat,
 no nesting deeper than one level. Fluid sizing uses `clamp()` rather than
 breakpoints; only two media queries exist and they handle genuine layout changes.
 
 ### Aesthetic brief
 
-**Minimal like the competitor, but printed rather than digital.** Think screen-printed
-show flyer or xeroxed zine, not SaaS landing page. Client's words: keep the minimal
-setup, stay away from "too techy or generic gradient", lean "Brooklyn grunge".
+**The format is a photocopied show flyer.** Not a landing page with flyer styling:
+the page is built as a stack of full-bleed slabs and hard rules, the way a xeroxed
+flyer is built from bands of ink. Client's words: keep the minimal setup, stay away
+from "too techy or generic gradient", lean "Brooklyn grunge".
 
-Three standing prohibitions follow from that:
+Top to bottom: ink masthead band, paper hero, ink ticker strip, numbered lineup
+rows, a taped-down clipping, ink closing slab, colophon. Sections alternate paper
+and ink rather than floating in one centred column.
+
+Three standing prohibitions:
 
 > - **No gradients.** No radial glows, no soft light, no colour washes. A drifting
->   multi-colour gradient layer was built and then removed for reading exactly like
->   the generic tech look the client rejected. The only `linear-gradient` in the
->   stylesheet paints a *solid* two-pixel underline bar, which is a CSS technique,
->   not a visual gradient.
+>   multi-colour gradient layer was built early on and deleted for reading exactly
+>   like the generic tech look the client rejected. There is now **zero**
+>   `*-gradient()` in the stylesheet, and it should stay that way.
 > - **No italics.** See Type below.
 > - **No slick motion.** Staged fade-ups and long eased transitions read as product
->   marketing. Transitions are `0.15s linear`, and there is no scroll animation.
+>   marketing. Transitions are `0.1s` to `0.12s linear`, abrupt on purpose.
 
-Texture comes from grain and hard rules only. The single `.grain` layer (coarse SVG
-turbulence, `mix-blend-mode: overlay`) is static, so nothing there needs a
-reduced-motion escape hatch.
+**Texture.** Two layers, no gradients in either:
 
-**Palette.** Warm off-black `--ink` (#0d0c0a), paper `--bone` (#eae5da), and one
-riso red `--accent` (#e2452c). The warmth is deliberate: cool blue-blacks and acid
-greens read techy, which is the thing to avoid. The accent is load-bearing precisely
-because it is rare: hover states, one emphasised phrase, the period after "spread".
-Resist adding a second accent.
+- `.dirt` is fixed at `z-index: 50` and sits **on top of the type**, carrying a
+  halftone dot screen over film grain at `mix-blend-mode: multiply`. A photocopy
+  screens the whole page, ink included. It is static, so reduced-motion has
+  nothing to disable.
+- Multiply is invisible against near-black, so the ink slabs carry their own
+  lighter toner speckle as a `background-image`. **Do not set the `background`
+  shorthand on `.masthead`, `.ticker` or `.cta`** or it silently wipes that
+  speckle and the slabs go dead flat. This already broke once.
 
-**Type. One family: Archivo, variable, 400 to 900.**
+Other grunge devices, all cheap and all deliberate: a red off-register
+`text-shadow` on the hero word, as if the second plate missed; lineup rows that
+invert to a full ink slab on hover, bleeding past the text via negative margin;
+the manifesto rotated `-0.7deg` inside a hard border with its label straddling the
+edge like a sticker. Rotation is dropped under 34rem, where it reads as broken
+rather than intentional.
 
-An industrial grotesque built for print. The wide weight axis is the point:
-headlines run at 800 to 900 for poster heft, body sits at 400 to 500. Pillar names
-and all small labels are uppercase with open tracking, like flyer copy.
+**Palette. Light paper, not dark.** This inverted partway through the project: a
+xeroxed flyer is ink on stock, and the dark build kept drifting back toward techy.
 
-> **No italics anywhere on this site.** This is a standing design rule, not an
-> oversight. Hierarchy and emphasis come from **weight, size, and colour only**.
-> A global `em { font-style: normal; font-weight: 700 }` rule enforces it, so
-> `<em>` keeps its semantics without the slant. Do not reintroduce a serif face,
-> an italic face, or `font-style: italic`.
+| Token | Value | Use |
+| --- | --- | --- |
+| `--paper` | `#e6e2d6` | newsprint base |
+| `--ink` | `#14120f` | type and slabs |
+| `--red` | `#b82d17` | accent on paper |
+| `--red-lift` | `#ff5a3c` | same accent on ink slabs |
 
-The hero demonstrates the pattern that replaced the old serif-italic treatment:
-`.hero__lead` sets the framing line small, at weight 500, in `--muted`;
-`.hero__key` lands the payoff word at full scale and weight 900. Roughly a 2:1
-size ratio plus a weight and colour step. Reuse that logic for new large type.
+`--red-lift` is a legibility tint, **not** a second accent: the base red only
+reaches 3.8:1 on near-black, which fails for small text. Every pair in use was
+checked against WCAG AA and passes. `--red` was darkened from `#d1361f` and
+`--ink-62` raised from 45% opacity specifically to clear 4.5:1. If you change
+either, re-check contrast rather than trusting the swatch.
+
+**Type. One family: Archivo, variable on TWO axes.**
+
+`wdth` 62 to 125% and `wght` 400 to 900. The width axis is what makes the flyer
+format work: condensed heavy caps are the poster voice, and Archivo supplies them
+without a second font file. Set it with `font-stretch`. The hero word runs
+`font-stretch: 62%; font-weight: 900`, lineup names 66%, ticker 70%, closing slab
+70%, wordmark 78%. Body copy stays default width at weight 500.
+
+Display type is uppercase throughout. Sentence case survives only in body copy and
+the clipping.
+
+> **No italics anywhere on this site.** A standing rule, not an oversight.
+> Emphasis is weight and colour: a global
+> `em { font-style: normal; font-weight: 800; color: var(--red) }` enforces it.
+> Do not reintroduce a serif face, an italic face, or `font-style: italic`.
+
+The hero keeps the weight-and-size hierarchy the client approved, restated in flyer
+terms: `.hero__lead` is a small tracked uppercase kicker in `--ink-70`, with
+`.hero__key` as the condensed poster word beneath it. The client called an earlier
+hero too large, so note that condensed type at 62% width occupies far less visual
+mass per point size: `--t-hero` maxing at `6.5rem` still reads smaller than the
+`6rem` non-condensed version it replaced. Check that before scaling it up.
 
 **Copy. No em dashes.** Also a standing rule. Use periods, commas, colons, or
 restructure the sentence. Do not substitute hyphens or en dashes as a workaround.
@@ -128,10 +162,13 @@ IntersectionObserver scroll-reveal system used to live here and was deliberately
 deleted, along with the `html.js` class and every `data-reveal` attribute, because
 staged fade-ups undercut the printed register. Do not add it back without asking.
 
-**Motion.** Almost nothing moves. Hover transitions are `0.15s linear`, chosen to
-feel abrupt rather than eased. No keyframe animations remain. The
-`prefers-reduced-motion` block therefore only has to disable smooth anchor
-scrolling and blanket-cancel transitions.
+**Motion.** The ticker is the only thing that moves, and it is a crude linear loop
+rather than an effect: two identical runs in a flex track, `translateX(-50%)` over
+34s, which travels exactly one run width and loops seamlessly. If you edit the
+ticker copy, **change both runs identically** or the loop will visibly jump. The
+strip is `aria-hidden` because the same three services are announced properly in
+the list below it. `prefers-reduced-motion` stops the animation and cancels all
+transitions.
 
 **Accessibility.** Skip link, visible `:focus-visible` rings, semantic headings in
 order, decorative layers hidden from screen readers. Keep it that way.
@@ -150,6 +187,10 @@ Two traps, both of which produced real bugs here:
    one `@font-face` per weight, all silently overwriting the same output file.
 2. **Request variable fonts with a range** (`wght@400..900`), never discrete
    values (`wght@400;600`), for the same reason.
+3. **Multiple axes must be listed alphabetically** in the css2 API (`wdth,wght`),
+   with ranges in matching order. The generator has to capture `font-stretch`
+   alongside `font-weight` or the width axis is unusable. Two axes cost real
+   bytes: 88KB against 34KB for weight alone.
 
 The `ABORT` guard below catches both by refusing to write the same filename twice.
 
@@ -158,24 +199,26 @@ cd assets/fonts && python3 - <<'PY'
 import re, urllib.request, pathlib, sys
 UA={'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 '
                  '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
-url="https://fonts.googleapis.com/css2?family=Archivo:wght@400..900&display=swap"
+url="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap"
 css=urllib.request.urlopen(urllib.request.Request(url,headers=UA)).read().decode()
 out,seen=[],{}
-for b in re.findall(r'@font-face\s*\{(.*?)\}',css,re.S):
-    g=lambda p:(re.search(p,b,re.S) or [None,None])[1]
+for blk in re.findall(r'@font-face\s*\{(.*?)\}',css,re.S):
+    g=lambda p:(re.search(p,blk,re.S) or [None,None])[1]
     ur=g(r'unicode-range:\s*([^;]+);')
     if not ur or not ur.strip().startswith('U+0000-00FF'): continue
-    fam,style,wt=g(r"font-family:\s*'([^']+)'"),g(r'font-style:\s*([^;]+);').strip(),g(r'font-weight:\s*([^;]+);').strip()
+    fam=g(r"font-family:\s*'([^']+)'"); style=g(r'font-style:\s*([^;]+);').strip()
+    wt=g(r'font-weight:\s*([^;]+);').strip()
+    st=(g(r'font-stretch:\s*([^;]+);') or '').strip() or None
     fn=fam.lower().replace(' ','-')+('-italic' if style=='italic' else '')+'.woff2'
-    if fn in seen:
-        sys.exit(f"ABORT: {fn} already written for weight {seen[fn]}, now {wt}. "
-                 "Google served static instances. Check the UA string.")
+    if fn in seen: sys.exit("ABORT: %s written twice (%s then %s). Static instances; check UA." % (fn,seen[fn],wt))
     seen[fn]=wt
-    data=urllib.request.urlopen(urllib.request.Request(g(r'url\((https://[^)]+\.woff2)\)'),headers=UA)).read()
-    pathlib.Path(fn).write_bytes(data)
-    out.append(f"@font-face {{\n  font-family: '{fam}';\n  font-style: {style};\n  font-weight: {wt};\n  font-display: swap;\n  src: url('../fonts/{fn}') format('woff2');\n}}")
+    pathlib.Path(fn).write_bytes(urllib.request.urlopen(urllib.request.Request(g(r'url\((https://[^)]+\.woff2)\)'),headers=UA)).read())
+    d=["  font-family: '%s';"%fam,"  font-style: %s;"%style,"  font-weight: %s;"%wt]
+    if st: d.append("  font-stretch: %s;"%st)
+    d+=["  font-display: swap;","  src: url('../fonts/%s') format('woff2');"%fn]
+    out.append("@font-face {\n"+"\n".join(d)+"\n}")
 pathlib.Path('../css/fonts.css').write_text("/* Generated. See CLAUDE.md, Fonts. */\n\n"+"\n\n".join(out)+"\n")
-print(f"{len(out)} face(s) written")
+print("%d face(s) written" % len(out))
 PY
 ```
 
