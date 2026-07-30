@@ -164,11 +164,13 @@ python3 -m http.server 8000   # http://localhost:8000
 
 ## Open TODOs before launch
 
-1. **Instagram URL.** Placeholder `https://www.instagram.com/` in two places in
-   `index.html`; search `INSTAGRAM_URL`.
-2. **Contact email.** Currently `hello@zeitvibeventures.com`; search
+1. **Contact email.** Currently `hello@zeitvibeventures.com`; search
    `CONTACT_EMAIL`. Unverified.
-3. **`assets/img/og.png`** (1200x630), then uncomment the `og:image` and
+2. **`assets/img/og.png`** (1200x630), then uncomment the `og:image` and
    `twitter:card` tags in `<head>`.
-4. **Register `zeitvibeventures.com`.** As of 2026-07-29 `whois` reported it
+3. **Register `zeitvibeventures.com`.** As of 2026-07-29 `whois` reported it
    unregistered. DNS cannot be pointed until it is purchased.
+
+Instagram links to `https://www.instagram.com/the_soundgeist/` in the top nav and
+the footer. The `?hl=en` locale param is deliberately omitted so the page renders
+in each visitor's own language.
