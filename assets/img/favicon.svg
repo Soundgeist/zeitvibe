@@ -1,8 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" fill="#14120f"/>
-  <path d="M17 19h30L23 45h24" fill="none" stroke="#e6e2d6" stroke-width="7.5"
-        stroke-linecap="butt" stroke-linejoin="miter"/>
-  <path d="M17 19h30L23 45h24" fill="none" stroke="#d1361f" stroke-width="7.5"
-        stroke-linecap="butt" stroke-linejoin="miter" transform="translate(2.2,1.8)"
-        opacity="0.9"/>
+  <rect width="64" height="64" fill="#eeeeec"/>
+  <text x="32" y="47" font-family="Georgia, 'Times New Roman', serif" font-size="46"
+        fill="#14140f" text-anchor="middle">Z</text>
 </svg>

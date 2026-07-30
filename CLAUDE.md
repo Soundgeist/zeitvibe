@@ -28,7 +28,7 @@ markup, revisit then.
 │   │   ├── fonts.css           # GENERATED, @font-face only. See Fonts below.
 │   │   └── styles.css          # all styling, token-driven
 │   ├── js/main.js              # progressive enhancement only
-│   ├── fonts/archivo.woff2     # self-hosted, latin subset, 2 axes, 88KB
+│   ├── fonts/eb-garamond.woff2 # self-hosted, latin subset, 43KB
 │   └── img/favicon.svg
 ├── CNAME                       # zeitvibeventures.com, do not delete
 ├── .nojekyll                   # skip Jekyll, serve files verbatim
@@ -69,107 +69,96 @@ Then enable **Enforce HTTPS** in Settings, Pages once the cert provisions
 
 **CSS.** Everything flows from the custom properties in `:root`: palette, type
 scale, rhythm. Change a token, not a call site. Sections are ordered in the file
-top to bottom to match the page. Class names are BEM-ish (`.act__name`), flat,
+top to bottom to match the page. Class names are BEM-ish (`.mark__name`), flat,
 no nesting deeper than one level. Fluid sizing uses `clamp()` rather than
-breakpoints; only two media queries exist and they handle genuine layout changes.
+breakpoints; only two media queries exist, one for the single-column collapse and
+one for reduced motion.
 
 ### Aesthetic brief
 
-**The format is a photocopied show flyer.** Not a landing page with flyer styling:
-the page is built as a stack of full-bleed slabs and hard rules, the way a xeroxed
-flyer is built from bands of ink. Client's words: keep the minimal setup, stay away
-from "too techy or generic gradient", lean "Brooklyn grunge".
+**Plain type on paper.** The client's reference is https://chaoticgoodprojects.org
+and the instruction was "simpler". The design is restraint: two asymmetric columns
+of type, top aligned, with the lower half of the page left empty on purpose. That
+emptiness is the composition, not an unfinished section.
 
-Top to bottom: ink masthead band, paper hero, a taped-down clipping, ink closing
-slab, colophon. Paper and ink alternate rather than everything floating in one
-centred column.
+Page in full: a stacked wordmark lockup top left, then a grid holding an uppercase
+statement, a short paragraph in the right column, two links, and a copyright line.
+That is the entire site.
 
-**The site names no services.** A scrolling ticker strip and a numbered "What we
-do" lineup (Brand / Content / Social strategy) both existed and were cut at the
-client's request. The hero subhead is now the only place the offer is stated. Do
-not reinstate either without being asked, and if services come back, ask where.
+The build passed through two rejected directions before this one, both worth
+knowing so they are not revisited:
 
-Three standing prohibitions:
+1. A dark page with a drifting multi-colour gradient and glow. Rejected as "too
+   techy or generic gradient".
+2. A photocopied flyer: newsprint paper, riso red, condensed poster caps,
+   halftone and grain texture, ink slabs, a scrolling ticker, a rotated clipping.
+   Rejected as too much. "No no, simpler."
 
-> - **No gradients.** No radial glows, no soft light, no colour washes. A drifting
->   multi-colour gradient layer was built early on and deleted for reading exactly
->   like the generic tech look the client rejected. There is now **zero**
->   `*-gradient()` in the stylesheet, and it should stay that way.
-> - **No italics.** See Type below.
-> - **No slick motion.** Staged fade-ups and long eased transitions read as product
->   marketing. Transitions are `0.1s` to `0.12s linear`, abrupt on purpose.
+Standing prohibitions, each one from explicit client feedback:
 
-**Texture.** Two layers, no gradients in either:
+> - **No colour.** The palette is monochrome. There is no accent token, and adding
+>   one would break the register.
+> - **No texture.** No grain, no halftone, no noise layers.
+> - **No rules, borders, or slabs.** Nothing is boxed, outlined, or inverted.
+> - **No gradients.** Zero `*-gradient()` in the stylesheet.
+> - **No italics.** No italic face is even loaded. See Type.
+> - **No motion.** No `@keyframes`, no `animation`. The only transition left is the
+>   skip link sliding into view.
+> - **No em dashes.** See Copy.
 
-- `.dirt` is fixed at `z-index: 50` and sits **on top of the type**, carrying a
-  halftone dot screen over film grain at `mix-blend-mode: multiply`. A photocopy
-  screens the whole page, ink included. It is static, so reduced-motion has
-  nothing to disable.
-- Multiply is invisible against near-black, so the ink slabs carry their own
-  lighter toner speckle as a `background-image`. **Do not set the `background`
-  shorthand on `.masthead` or `.cta`** or it silently wipes that
-  speckle and the slabs go dead flat. This already broke once.
+When something looks flat, the fix is size, weight, or whitespace. Never a
+texture, a rule, or a colour.
 
-Other grunge devices, all cheap and all deliberate: a red off-register
-`text-shadow` on the hero word, as if the second plate missed; the manifesto
-rotated `-0.7deg` inside a hard border with its label straddling the edge like a
-sticker. Rotation is dropped under 34rem, where it reads as broken rather than
-intentional.
-
-**Palette. Light paper, not dark.** This inverted partway through the project: a
-xeroxed flyer is ink on stock, and the dark build kept drifting back toward techy.
+**Palette.** Two values and one tint.
 
 | Token | Value | Use |
 | --- | --- | --- |
-| `--paper` | `#e6e2d6` | newsprint base |
-| `--ink` | `#14120f` | type and slabs |
-| `--red` | `#b82d17` | accent on paper |
-| `--red-lift` | `#ff5a3c` | same accent on ink slabs |
+| `--paper` | `#eeeeec` | page, a warm off-white |
+| `--ink` | `#14140f` | all type |
+| `--ink-60` | 60% ink | the copyright line only |
 
-`--red-lift` is a legibility tint, **not** a second accent: the base red only
-reaches 3.8:1 on near-black, which fails for small text. Every pair in use was
-checked against WCAG AA and passes. `--red` was darkened from `#d1361f` and
-`--ink-62` raised from 45% opacity specifically to clear 4.5:1. If you change
-either, re-check contrast rather than trusting the swatch.
+Contrast is measured, not eyeballed. `--ink-60` sits at 4.61:1, just over AA, so do
+not lighten it. Links underline on hover rather than dimming, because an opacity
+fade fell to 3.93:1 at the small end of the fluid link size.
 
-**Type. One family: Archivo, variable on TWO axes.**
+**Type. One family: EB Garamond, variable 400 to 600, roman only.**
 
-`wdth` 62 to 125% and `wght` 400 to 900. The width axis is what makes the flyer
-format work: condensed heavy caps are the poster voice, and Archivo supplies them
-without a second font file. Set it with `font-stretch`. The hero word runs
-`font-stretch: 62%; font-weight: 900`, the closing slab 70%, the wordmark 78%.
-Body copy stays default width at weight 500.
+An old-style serif, the closest free match to the reference. Note the history: an
+earlier build used Instrument Serif italic for emphasis and the client asked for it
+to be removed entirely in favour of sans. The reference then turned out to be
+wholly serif, and the client confirmed serif wins. **Italics did not come back
+with it.**
 
-Display type is uppercase throughout. Sentence case survives only in body copy and
-the clipping.
+> **No italics anywhere on this site.** A standing rule across three separate
+> instructions. The italic face is not even downloaded, so `<em>` renders roman at
+> weight 600 via a global reset. Do not add `font-style: italic` or fetch an
+> italic face.
 
-> **No italics anywhere on this site.** A standing rule, not an oversight.
-> Emphasis is weight and colour: a global
-> `em { font-style: normal; font-weight: 800; color: var(--red) }` enforces it.
-> Do not reintroduce a serif face, an italic face, or `font-style: italic`.
+Hierarchy is size alone. The statement is uppercase at `--t-statement`, the links
+sit at `--t-link`, body copy at `--t-about`, the copyright smallest. Everything is
+weight 400 or 500; nothing is bold.
 
-The hero keeps the weight-and-size hierarchy the client approved, restated in flyer
-terms: `.hero__lead` is a small tracked uppercase kicker in `--ink-70`, with
-`.hero__key` as the condensed poster word beneath it. The client called an earlier
-hero too large, so note that condensed type at 62% width occupies far less visual
-mass per point size: `--t-hero` maxing at `6.5rem` still reads smaller than the
-`6rem` non-condensed version it replaced. Check that before scaling it up.
+**Layout.** `.grid` places four flat children explicitly by row and column rather
+than wrapping them in column divs. That is deliberate: the source order
+(statement, paragraph, links, copyright) is already the correct single-column
+reading order, so the 48rem breakpoint only has to drop the explicit placement.
+Nothing is hidden or reordered at any width. Keep that property if you add
+anything.
 
-**Copy. No em dashes.** Also a standing rule. Use periods, commas, colons, or
-restructure the sentence. Do not substitute hyphens or en dashes as a workaround.
-This applies to visible copy, `<title>`, meta descriptions, and alt text. Code
-comments follow it too, for consistency.
+**Copy. No em dashes.** A standing rule. Use periods, commas, colons, or
+restructure. Do not substitute hyphens or en dashes as a workaround. Applies to
+visible copy, `<title>`, meta descriptions, alt text, and code comments.
 
-**JavaScript.** `main.js` does one thing: stamp the current year in the footer.
-It is enhancement only and the page must remain complete without it. An
-IntersectionObserver scroll-reveal system used to live here and was deliberately
-deleted, along with the `html.js` class and every `data-reveal` attribute, because
-staged fade-ups undercut the printed register. Do not add it back without asking.
+**The site names no services.** A numbered "What we do" lineup and a services
+ticker both existed and were cut at the client's request. The reference has a
+services list in its left column and the client was asked directly whether to
+reinstate one; the answer was no. The paragraph is the only place the offer
+appears. Do not add a services list back unprompted.
 
-**Motion.** Nothing on the page animates. There are no `@keyframes` and no
-`animation` declarations left; the only movement is `0.1s` to `0.12s linear` colour
-changes on hover. `prefers-reduced-motion` disables smooth anchor scrolling and
-cancels transitions outright. Keep it this way unless asked.
+**JavaScript.** `main.js` does one thing: stamp the current year in the footer. It
+is enhancement only and the page must be complete without it. An
+IntersectionObserver scroll-reveal system used to live here and was deleted, along
+with the `html.js` class and every `data-reveal` attribute. Do not add it back.
 
 **Accessibility.** Skip link, visible `:focus-visible` rings, semantic headings in
 order, decorative layers hidden from screen readers. Keep it that way.
@@ -188,10 +177,10 @@ Two traps, both of which produced real bugs here:
    one `@font-face` per weight, all silently overwriting the same output file.
 2. **Request variable fonts with a range** (`wght@400..900`), never discrete
    values (`wght@400;600`), for the same reason.
-3. **Multiple axes must be listed alphabetically** in the css2 API (`wdth,wght`),
-   with ranges in matching order. The generator has to capture `font-stretch`
-   alongside `font-weight` or the width axis is unusable. Two axes cost real
-   bytes: 88KB against 34KB for weight alone.
+3. **Multiple axes must be listed alphabetically** if you ever need more than
+   one (`wdth,wght`), with ranges in matching order, and the generator has to
+   capture `font-stretch` alongside `font-weight`. EB Garamond only exposes
+   `wght`, so this does not currently apply.
 
 The `ABORT` guard below catches both by refusing to write the same filename twice.
 
@@ -200,7 +189,7 @@ cd assets/fonts && python3 - <<'PY'
 import re, urllib.request, pathlib, sys
 UA={'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 '
                  '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
-url="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap"
+url="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400..600&display=swap"
 css=urllib.request.urlopen(urllib.request.Request(url,headers=UA)).read().decode()
 out,seen=[],{}
 for blk in re.findall(r'@font-face\s*\{(.*?)\}',css,re.S):

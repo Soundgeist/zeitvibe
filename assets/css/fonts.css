@@ -1,12 +1,11 @@
 /* Self-hosted webfont. Latin subset only, no external requests.
    Generated file: see CLAUDE.md, Fonts section.
-   Archivo variable on two axes: width 62-125%, weight 400-900. */
+   EB Garamond, variable weight 400 to 600. Roman only, no italic face. */
 
 @font-face {
-  font-family: 'Archivo';
+  font-family: 'EB Garamond';
   font-style: normal;
-  font-weight: 400 900;
-  font-stretch: 62% 125%;
+  font-weight: 400 600;
   font-display: swap;
-  src: url('../fonts/archivo.woff2') format('woff2');
+  src: url('../fonts/eb-garamond.woff2') format('woff2');
 }

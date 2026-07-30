@@ -6,7 +6,7 @@
 <title>Zeitvibe Ventures. Brand, content, and social strategy.</title>
 <meta name="description" content="A boutique studio built for one thing: making things spread. Brand, content, and social strategy for anything wanting to become a beloved part of the cultural and internet ether.">
 <link rel="canonical" href="https://zeitvibeventures.com/">
-<meta name="theme-color" content="#e6e2d6">
+<meta name="theme-color" content="#eeeeec">
 
 <!-- Open Graph / social -->
 <meta property="og:type" content="website">
@@ -20,7 +20,7 @@
 -->
 
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<link rel="preload" href="assets/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/eb-garamond.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/fonts.css">
 <link rel="stylesheet" href="assets/css/styles.css">
 </head>
@@ -31,70 +31,39 @@
        Contact email → search this file for CONTACT_EMAIL
      ========================================================== -->
 
-<div class="dirt" aria-hidden="true"></div>
-
 <a class="skip" href="#main">Skip to content</a>
 
-<!-- Masthead: solid ink slab, full bleed, like the header band on a flyer -->
-<header class="masthead">
-  <div class="masthead__in">
-    <a class="wordmark" href="/" aria-label="Zeitvibe Ventures, home">
-      Zeitvibe<span class="wordmark__sub">Ventures</span>
-    </a>
-    <nav class="masthead__nav">
-      <a href="https://www.instagram.com/the_soundgeist/" target="_blank" rel="noopener">Instagram</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </div>
-</header>
+<div class="page">
 
-<main id="main">
+  <!-- Stacked lockup, top left, in place of a logo image -->
+  <a class="mark" href="/" aria-label="Zeitvibe Ventures, home">
+    <span class="mark__name">Zeitvibe</span>
+    <span class="mark__sub">Ventures</span>
+  </a>
 
-  <section class="hero">
-    <h1 class="hero__line">
-      <span class="hero__lead">Making things</span>
-      <span class="hero__key">Spread<span class="dot">.</span></span>
-    </h1>
-    <p class="hero__sub">
+  <!-- Flat children, placed explicitly by the grid. Source order is already
+       the single-column reading order on narrow screens. -->
+  <main id="main" class="grid">
+
+    <h1 class="statement">Making things spread.</h1>
+
+    <p class="about">
       A boutique studio built for one thing. Brand, content, and social strategy
-      for anything wanting to become a beloved part of the cultural and internet ether.
+      for anything wanting to become a beloved part of the cultural and internet
+      ether. Attention isn't bought anymore, it's earned in public.
     </p>
-  </section>
 
-  <!-- Manifesto as a pasted-in clipping: hard border, sitting off-square -->
-  <section class="insert">
-    <div class="clipping">
-      <span class="clipping__tag">Manifesto</span>
-      <p>
-        Attention isn't bought anymore, it's <em>earned in public</em>. We work small
-        and deliberately: fewer clients, sharper instincts, and a bias toward things
-        that feel inevitable once they exist. The goal is never reach for its own
-        sake. It's becoming something people are glad to pass along.
-      </p>
-    </div>
-  </section>
-
-  <!-- Closing slab: inverted, full bleed -->
-  <section class="cta" id="contact">
-    <div class="cta__in">
-      <h2 class="cta__line">
-        Let's make something<br>
-        people can't <em>not</em> share.
-      </h2>
+    <nav class="links">
       <!-- CONTACT_EMAIL -->
-      <a class="cta__mail" href="mailto:hello@zeitvibeventures.com">
-        hello@zeitvibeventures.com
-        <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M9 5h10v10"/></svg>
-      </a>
-    </div>
-  </section>
+      <a href="mailto:hello@zeitvibeventures.com">Contact</a>
+      <a href="https://www.instagram.com/the_soundgeist/" target="_blank" rel="noopener">Instagram</a>
+    </nav>
 
-</main>
+    <p class="colophon">&copy;<span data-year>2026</span> Zeitvibe Ventures</p>
 
-<footer class="colophon">
-  <span>&copy;<span data-year>2026</span> Zeitvibe Ventures</span>
-  <a href="https://www.instagram.com/the_soundgeist/" target="_blank" rel="noopener">Instagram</a>
-</footer>
+  </main>
+
+</div>
 
 <script src="assets/js/main.js" defer></script>
 </body>
