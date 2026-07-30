@@ -80,9 +80,14 @@ the page is built as a stack of full-bleed slabs and hard rules, the way a xerox
 flyer is built from bands of ink. Client's words: keep the minimal setup, stay away
 from "too techy or generic gradient", lean "Brooklyn grunge".
 
-Top to bottom: ink masthead band, paper hero, ink ticker strip, numbered lineup
-rows, a taped-down clipping, ink closing slab, colophon. Sections alternate paper
-and ink rather than floating in one centred column.
+Top to bottom: ink masthead band, paper hero, a taped-down clipping, ink closing
+slab, colophon. Paper and ink alternate rather than everything floating in one
+centred column.
+
+**The site names no services.** A scrolling ticker strip and a numbered "What we
+do" lineup (Brand / Content / Social strategy) both existed and were cut at the
+client's request. The hero subhead is now the only place the offer is stated. Do
+not reinstate either without being asked, and if services come back, ask where.
 
 Three standing prohibitions:
 
@@ -102,15 +107,14 @@ Three standing prohibitions:
   nothing to disable.
 - Multiply is invisible against near-black, so the ink slabs carry their own
   lighter toner speckle as a `background-image`. **Do not set the `background`
-  shorthand on `.masthead`, `.ticker` or `.cta`** or it silently wipes that
+  shorthand on `.masthead` or `.cta`** or it silently wipes that
   speckle and the slabs go dead flat. This already broke once.
 
 Other grunge devices, all cheap and all deliberate: a red off-register
-`text-shadow` on the hero word, as if the second plate missed; lineup rows that
-invert to a full ink slab on hover, bleeding past the text via negative margin;
-the manifesto rotated `-0.7deg` inside a hard border with its label straddling the
-edge like a sticker. Rotation is dropped under 34rem, where it reads as broken
-rather than intentional.
+`text-shadow` on the hero word, as if the second plate missed; the manifesto
+rotated `-0.7deg` inside a hard border with its label straddling the edge like a
+sticker. Rotation is dropped under 34rem, where it reads as broken rather than
+intentional.
 
 **Palette. Light paper, not dark.** This inverted partway through the project: a
 xeroxed flyer is ink on stock, and the dark build kept drifting back toward techy.
@@ -133,8 +137,8 @@ either, re-check contrast rather than trusting the swatch.
 `wdth` 62 to 125% and `wght` 400 to 900. The width axis is what makes the flyer
 format work: condensed heavy caps are the poster voice, and Archivo supplies them
 without a second font file. Set it with `font-stretch`. The hero word runs
-`font-stretch: 62%; font-weight: 900`, lineup names 66%, ticker 70%, closing slab
-70%, wordmark 78%. Body copy stays default width at weight 500.
+`font-stretch: 62%; font-weight: 900`, the closing slab 70%, the wordmark 78%.
+Body copy stays default width at weight 500.
 
 Display type is uppercase throughout. Sentence case survives only in body copy and
 the clipping.
@@ -162,13 +166,10 @@ IntersectionObserver scroll-reveal system used to live here and was deliberately
 deleted, along with the `html.js` class and every `data-reveal` attribute, because
 staged fade-ups undercut the printed register. Do not add it back without asking.
 
-**Motion.** The ticker is the only thing that moves, and it is a crude linear loop
-rather than an effect: two identical runs in a flex track, `translateX(-50%)` over
-34s, which travels exactly one run width and loops seamlessly. If you edit the
-ticker copy, **change both runs identically** or the loop will visibly jump. The
-strip is `aria-hidden` because the same three services are announced properly in
-the list below it. `prefers-reduced-motion` stops the animation and cancels all
-transitions.
+**Motion.** Nothing on the page animates. There are no `@keyframes` and no
+`animation` declarations left; the only movement is `0.1s` to `0.12s linear` colour
+changes on hover. `prefers-reduced-motion` disables smooth anchor scrolling and
+cancels transitions outright. Keep it this way unless asked.
 
 **Accessibility.** Skip link, visible `:focus-visible` rings, semantic headings in
 order, decorative layers hidden from screen readers. Keep it that way.

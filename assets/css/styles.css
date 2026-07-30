@@ -29,7 +29,6 @@
 
   /* Fluid scale */
   --t-hero: clamp(2.75rem, 9vw, 6.5rem);
-  --t-act:  clamp(1.5rem, 5vw, 3.25rem);
   --t-cta:  clamp(1.75rem, 5vw, 3.5rem);
   --t-lead: clamp(1.0625rem, 1.6vw, 1.375rem);
   --t-body: clamp(1rem, 1.2vw, 1.125rem);
@@ -113,8 +112,9 @@ svg { fill: none; stroke: currentColor; stroke-width: 2.5; }
 }
 
 /* The dirt layer multiplies, so it is invisible against near-black. The ink
-   slabs carry their own toner speckle instead, or they read as dead flat. */
-.masthead, .ticker, .cta {
+   slabs carry their own toner speckle instead, or they read as dead flat.
+   Do not set the `background` shorthand here: it wipes the speckle. */
+.masthead, .cta {
   background-color: var(--ink);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23s)' opacity='0.2'/%3E%3C/svg%3E");
   background-size: 200px 200px;
@@ -159,25 +159,24 @@ svg { fill: none; stroke: currentColor; stroke-width: 2.5; }
 
 /* ---------- Shared shell for non-bleed sections ---------- */
 
-.hero, .lineup, .insert {
+.hero, .insert {
   max-width: var(--maxw);
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
 
-.eyebrow {
-  font-size: 0.6875rem;
-  font-weight: 800;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--ink-70);
-  padding-bottom: 0.875rem;
-  border-bottom: var(--rule) solid var(--ink);
-}
 
 /* ---------- Hero ---------- */
 
-.hero { padding-block: clamp(2.5rem, 7vh, 5rem) clamp(2.5rem, 7vh, 4.5rem); }
+/* With the ticker and lineup gone the hero carries the entire top of the
+   page, so it gets a floor to sit against rather than looking stubby. */
+.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: min(58svh, 34rem);
+  padding-block: clamp(2.5rem, 7vh, 5rem) clamp(3rem, 8vh, 5.5rem);
+}
 
 .hero__line { line-height: 0.86; }
 
@@ -217,73 +216,6 @@ svg { fill: none; stroke: currentColor; stroke-width: 2.5; }
   line-height: 1.42;
   text-wrap: pretty;
 }
-
-/* ---------- Ticker: crude broadcast strip ---------- */
-
-.ticker {
-  overflow: hidden;
-  padding-block: 0.5rem;
-  border-block: var(--rule) solid var(--ink);
-}
-.ticker__track {
-  display: flex;
-  width: max-content;
-  animation: ticker 34s linear infinite;
-}
-.ticker__run {
-  flex: none;
-  font-size: clamp(1.125rem, 2.6vw, 1.875rem);
-  font-stretch: 70%;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-.ticker b { color: var(--red-lift); }
-
-@keyframes ticker { to { transform: translateX(-50%); } }
-
-/* ---------- Lineup: numbered rows that invert on hover ---------- */
-
-.lineup { padding-block: var(--section) 0; }
-
-.act {
-  display: grid;
-  grid-template-columns: auto 1fr minmax(0, 26ch);
-  align-items: baseline;
-  gap: clamp(0.875rem, 2.5vw, 2.5rem);
-  padding: clamp(0.875rem, 2.2vw, 1.5rem) 0.75rem;
-  /* Pulled out so the inverted slab bleeds past the text without shifting it */
-  margin-inline: -0.75rem;
-  border-bottom: var(--rule) solid var(--ink);
-  transition: background-color 0.1s linear, color 0.1s linear;
-}
-.act:hover { background: var(--ink); color: var(--paper); }
-
-.act__num {
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  color: var(--ink-62);
-}
-.act:hover .act__num { color: var(--red-lift); }
-
-.act__name {
-  font-size: var(--t-act);
-  font-stretch: 66%;
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: 0.005em;
-  text-transform: uppercase;
-}
-
-.act__note {
-  font-size: 0.875rem;
-  font-weight: 500;
-  line-height: 1.45;
-  color: var(--ink-70);
-}
-.act:hover .act__note { color: var(--paper-70); }
 
 /* ---------- Manifesto as a pasted-in clipping ---------- */
 
@@ -381,13 +313,6 @@ svg { fill: none; stroke: currentColor; stroke-width: 2.5; }
 
 /* ---------- Responsive ---------- */
 
-@media (max-width: 60rem) {
-  .act {
-    grid-template-columns: auto 1fr;
-    row-gap: 0.5rem;
-  }
-  .act__note { grid-column: 2; max-width: 44ch; }
-}
 
 @media (max-width: 34rem) {
   .colophon { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
@@ -397,12 +322,11 @@ svg { fill: none; stroke: currentColor; stroke-width: 2.5; }
 }
 
 /* ---------- Reduced motion ----------
-   The ticker is the only moving thing on the page. */
+   Nothing animates on the page now; this covers anchor scroll and hovers. */
 
 html { scroll-behavior: smooth; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .ticker__track { animation: none; }
   * { transition: none !important; }
 }
